@@ -22,9 +22,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out source code...'
-
-              
-            }
+                git credentialsId: 'Git-cred', url: 'https://github.com/gopinathbca35/docker-compose-react-nodejs-mysql.git'
+          }
         }
 
         stage('Build Frontend Image') {
