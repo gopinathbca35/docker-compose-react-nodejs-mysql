@@ -90,30 +90,20 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
 
-                sh '''
-                    ssh -o StrictHostKeyChecking=no \
-                    ${EC2_USER}@${EC2_HOST} << EOF
+                sshagent(['ec2-cred']) {
 
-                    set -e
+                    sh '''
+                        echo "Connecting to EC2..."
 
-                    cd ${APP_DIR}
-
-                    echo "Pulling latest frontend image..."
-                    docker pull ${FRONTEND_IMAGE}:latest
-
-                    echo "Pulling latest backend image..."
-                    docker pull ${BACKEND_IMAGE}:latest
-
-                    echo "Deploying application..."
-                    docker compose up -d
-
-                    echo "Deployment completed."
-
-                    EOF
-                '''
+                        ssh -o StrictHostKeyChecking=no \
+                            ${EC2_USER}@${EC2_HOST} \
+                            "cd ${APP_DIR} && \
+                             docker compose pull && \
+                             docker compose up -d"
+                    '''
+                }
             }
         }
-    }
 
     post {
 
