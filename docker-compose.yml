@@ -18,7 +18,7 @@ services:
   bezkoder-api:
     depends_on:
       - mysqldb
-    build: ./bezkoder-api
+    image: gopinathbca35/bezkoder-backend:latest
     restart: unless-stopped
     env_file: ./.env
     ports:
@@ -37,10 +37,7 @@ services:
   bezkoder-ui:
     depends_on:
       - bezkoder-api
-    build:
-      context: ./bezkoder-ui
-      args:
-        - REACT_APP_API_BASE_URL=$CLIENT_API_BASE_URL
+    image: gopinathbca35/bezkoder-frontend:latest
     ports:
       - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
     networks:
