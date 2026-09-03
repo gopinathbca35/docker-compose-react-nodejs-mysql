@@ -2,10 +2,6 @@ pipeline {
 
     agent any
     
-    tools {
-        sonarQube 'SonarScanner'
-    }
-
     environment {
 
         DOCKERHUB_USERNAME = 'gopinathbca35'
