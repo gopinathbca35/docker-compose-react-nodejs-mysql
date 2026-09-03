@@ -26,6 +26,32 @@ pipeline {
           }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+
+                withSonarQubeEnv('SonarQube') {
+
+                    sh '''
+                        sonar-scanner \
+                          -Dsonar.projectKey=shopping-application \
+                          -Dsonar.projectName="Shopping Application" \
+                          -Dsonar.sources=bezkoder-ui/src,bezkoder-api \
+                          -Dsonar.exclusions="**/node_modules/**,**/build/**,**/dist/**"
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+
+                timeout(time: 5, unit: 'MINUTES') {
+
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
         stage('Build Frontend Image') {
             steps {
                 echo 'Building frontend Docker image...'
