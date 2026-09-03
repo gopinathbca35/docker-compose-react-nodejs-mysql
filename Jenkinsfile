@@ -26,21 +26,26 @@ pipeline {
           }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
+stage('SonarQube Analysis') {
+    steps {
 
-                withSonarQubeEnv('SonarQube') {
+        script {
 
-                    sh '''
-                        sonar-scanner \
-                          -Dsonar.projectKey=React-NodeJS-MySQL \
-                          -Dsonar.projectName="React-NodeJS-MySQL" \
-                          -Dsonar.sources=bezkoder-ui/src,bezkoder-api \
-                          -Dsonar.exclusions="**/node_modules/**,**/build/**,**/dist/**"
-                    '''
-                }
+            def scannerHome = tool 'SonarScanner'
+
+            withSonarQubeEnv('SonarQube') {
+
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                      -Dsonar.projectKey=React-NodeJS-MySQL \
+                      -Dsonar.projectName="React-NodeJS-MySQL" \
+                      -Dsonar.sources=bezkoder-ui/src,bezkoder-api \
+                      -Dsonar.exclusions="**/node_modules/**,**/build/**,**/dist/**"
+                """
             }
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
