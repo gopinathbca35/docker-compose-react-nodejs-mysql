@@ -33,8 +33,8 @@ pipeline {
 
                     sh '''
                         sonar-scanner \
-                          -Dsonar.projectKey=shopping-application \
-                          -Dsonar.projectName="Shopping Application" \
+                          -Dsonar.projectKey=React-NodeJS-MySQL \
+                          -Dsonar.projectName="React-NodeJS-MySQL" \
                           -Dsonar.sources=bezkoder-ui/src,bezkoder-api \
                           -Dsonar.exclusions="**/node_modules/**,**/build/**,**/dist/**"
                     '''
